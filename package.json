@@ -1,0 +1,13 @@
+{
+  "name": "ecommerce",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "cd server && npm install && npm run build  && cd ../client && npm install && npm run build",
+    "start": "node server/dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
