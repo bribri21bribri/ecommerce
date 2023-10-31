@@ -73,7 +73,7 @@ const OrderDetail = () => {
     const [order, setOrder] = useState<Order | null>(null);
     const { sendRequest: getOrderDetail } = useAxios();
     const backHandler = () => {
-        navigate(-1);
+        navigate('/user/orders');
     };
 
     useEffect(() => {

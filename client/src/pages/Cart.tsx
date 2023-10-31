@@ -1,5 +1,6 @@
 import { styled } from 'styled-components';
 import { MdDeleteOutline } from 'react-icons/md';
+import { BsFillCartXFill } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import {
     Container,
@@ -8,6 +9,7 @@ import {
     Button,
     ButtonGroup,
     Card,
+    H4,
 } from '../styles/global';
 import device from '../styles/BreakPoints';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
@@ -72,6 +74,15 @@ const AmountBtn = styled.button`
     padding: 0.6rem;
 `;
 
+const FlexColumnCenter = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    gap: 1.2rem;
+`;
+
 const Cart = () => {
     const cartItems = useAppSelector(selectCartItems);
     const totalQuantity = useAppSelector(getMemoizedTotalQuantity);
@@ -106,71 +117,84 @@ const Cart = () => {
             <Row>
                 <Col $lg={8} $md={7}>
                     <Card>
-                        {cartItems.map((item, index) => (
-                            <CartItem key={item._id}>
-                                <Row>
-                                    <Col $lg={3}>
-                                        <CartItemImg src={item.imageURL} />
-                                    </Col>
-                                    <Col $lg={9}>
-                                        <CartItemHead>
-                                            <CartItemTitle>
-                                                {item.name}
-                                            </CartItemTitle>
-                                            <QuantityBtnWrap>
-                                                <AmountBtn
-                                                    onClick={() =>
-                                                        decreaseCartQuantity(
-                                                            item
-                                                        )
-                                                    }
-                                                    className="btn-quantity"
-                                                >
-                                                    &minus;
-                                                </AmountBtn>
-                                                <span className="p-quantiry">
-                                                    {item.cartQuantity}
-                                                </span>
-                                                <AmountBtn
-                                                    onClick={() =>
-                                                        addCartQuantity(item)
-                                                    }
-                                                    className="btn-quantity"
-                                                >
-                                                    +
-                                                </AmountBtn>
-                                            </QuantityBtnWrap>
-                                        </CartItemHead>
-                                        <CardBlock>
-                                            <ButtonGroup>
-                                                <Button
-                                                    $outline
-                                                    onClick={() =>
-                                                        removeProductFromCart(
-                                                            item
-                                                        )
-                                                    }
-                                                >
-                                                    <MdDeleteOutline />
-                                                    <span> Remove Item</span>
-                                                </Button>
-                                                {/* <Button $outline>
+                        {cartItems.length ? (
+                            cartItems.map((item, index) => (
+                                <CartItem key={item._id}>
+                                    <Row>
+                                        <Col $lg={3}>
+                                            <CartItemImg src={item.imageURL} />
+                                        </Col>
+                                        <Col $lg={9}>
+                                            <CartItemHead>
+                                                <CartItemTitle>
+                                                    {item.name}
+                                                </CartItemTitle>
+                                                <QuantityBtnWrap>
+                                                    <AmountBtn
+                                                        onClick={() =>
+                                                            decreaseCartQuantity(
+                                                                item
+                                                            )
+                                                        }
+                                                        className="btn-quantity"
+                                                    >
+                                                        &minus;
+                                                    </AmountBtn>
+                                                    <span className="p-quantiry">
+                                                        {item.cartQuantity}
+                                                    </span>
+                                                    <AmountBtn
+                                                        onClick={() =>
+                                                            addCartQuantity(
+                                                                item
+                                                            )
+                                                        }
+                                                        className="btn-quantity"
+                                                    >
+                                                        +
+                                                    </AmountBtn>
+                                                </QuantityBtnWrap>
+                                            </CartItemHead>
+                                            <CardBlock>
+                                                <ButtonGroup>
+                                                    <Button
+                                                        $outline
+                                                        onClick={() =>
+                                                            removeProductFromCart(
+                                                                item
+                                                            )
+                                                        }
+                                                    >
+                                                        <MdDeleteOutline />
+                                                        <span>
+                                                            {' '}
+                                                            Remove Item
+                                                        </span>
+                                                    </Button>
+                                                    {/* <Button $outline>
                                                     <MdOutlineFavoriteBorder />
                                                     <span>
                                                         {' '}
                                                         Move To Wish List
                                                     </span>
                                                 </Button> */}
-                                            </ButtonGroup>
-                                            <CartItemPrice>
-                                                $
-                                                {item.cartQuantity * item.price}
-                                            </CartItemPrice>
-                                        </CardBlock>
-                                    </Col>
-                                </Row>
-                            </CartItem>
-                        ))}
+                                                </ButtonGroup>
+                                                <CartItemPrice>
+                                                    $
+                                                    {item.cartQuantity *
+                                                        item.price}
+                                                </CartItemPrice>
+                                            </CardBlock>
+                                        </Col>
+                                    </Row>
+                                </CartItem>
+                            ))
+                        ) : (
+                            <FlexColumnCenter>
+                                <BsFillCartXFill size={90} />
+                                <H4>Cart Is Empty</H4>
+                            </FlexColumnCenter>
+                        )}
                     </Card>
                 </Col>
                 <Col $lg={4} $md={5}>
