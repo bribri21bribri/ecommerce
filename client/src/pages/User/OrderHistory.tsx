@@ -159,9 +159,15 @@ const OrderHistory = () => {
         endDate: Date | null;
     }) => {
         const { page = 1, startDate, endDate } = params;
+        if (startDate) {
+            startDate.setHours(0, 0, 0, 0);
+        }
         const startDateQuery = startDate
             ? `&startDate=${startDate.toISOString()}`
             : '';
+        if (endDate) {
+            endDate.setHours(23, 59, 59, 999);
+        }
         const endDateDateQuery = endDate
             ? `&endDate=${endDate.toISOString()}`
             : '';
@@ -216,149 +222,126 @@ const OrderHistory = () => {
         });
     }, []);
     return (
-        <>
-            {/* {fetchHistoryError && (
-                <Modal.Root>
-                    <Modal.Header handleClose={closeErrorModalHandler}>
-                        Error
-                    </Modal.Header>
-                    <Modal.Body>
-                        <p>{fetchHistoryError}</p>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button onClick={closeErrorModalHandler}>
-                            Confirm
-                        </Button>
-                    </Modal.Footer>
-                </Modal.Root>
-            )}
-            {isLoading && <Loader />} */}
-            {/* <HistorySection> */}
-            <Container>
-                <Row>
-                    <Col>
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                            <Row>
-                                <Col $md={3}>
-                                    <FormGroup>
-                                        <label htmlFor="startDate">
-                                            Start Date
-                                        </label>
-                                        <Controller
-                                            name="startDate"
-                                            control={control}
-                                            render={({
-                                                field: { onChange, value },
-                                            }) => {
-                                                return (
-                                                    <ReactDatePicker
-                                                        customInput={
-                                                            <DateInput
-                                                                $invalid={
-                                                                    !!errors
-                                                                        .startDate
-                                                                        ?.message
-                                                                }
-                                                            />
-                                                        }
-                                                        onChange={onChange}
-                                                        selected={value}
-                                                        placeholderText="select date"
-                                                    />
-                                                );
-                                            }}
-                                        />
-                                    </FormGroup>
-                                </Col>
-                                <Col $md={3}>
-                                    <FormGroup>
-                                        <label htmlFor="endDate">
-                                            End Date
-                                        </label>
-                                        <Controller
-                                            name="endDate"
-                                            control={control}
-                                            render={({
-                                                field: { onChange, value },
-                                            }) => {
-                                                return (
-                                                    <ReactDatePicker
-                                                        customInput={
-                                                            <DateInput
-                                                                $invalid={
-                                                                    !!errors
-                                                                        .endDate
-                                                                        ?.message
-                                                                }
-                                                            />
-                                                        }
-                                                        onChange={onChange}
-                                                        selected={value}
-                                                        placeholderText="select date"
-                                                    />
-                                                );
-                                            }}
-                                        />
-                                    </FormGroup>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col $md={6}>
-                                    <ButtonGroup>
-                                        <Button type="submit" $block>
-                                            Search
-                                        </Button>
-                                    </ButtonGroup>
-                                </Col>
-                            </Row>
-                        </form>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <Card>
-                            <STable>
-                                <STHead>
-                                    <tr>
-                                        <STH>Date</STH>
-                                        <STH>Price</STH>
-                                        <STH>Status</STH>
-                                        <STH>Action</STH>
-                                    </tr>
-                                </STHead>
-                                <STBody>
-                                    {pageOrders.map((item, index) => (
-                                        <STBodyTR key={item._id}>
-                                            <STD>{item.createdAt}</STD>
-                                            <STD>${item.totalPrice}</STD>
-                                            <STD>{item.isDelivered}</STD>
-                                            <STD>
-                                                <Button
-                                                    onClick={() =>
-                                                        detaliHandler(item._id)
+        <Container>
+            <Row>
+                <Col>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <Row>
+                            <Col $md={3}>
+                                <FormGroup>
+                                    <label htmlFor="startDate">
+                                        Start Date
+                                    </label>
+                                    <Controller
+                                        name="startDate"
+                                        control={control}
+                                        render={({
+                                            field: { onChange, value },
+                                        }) => {
+                                            return (
+                                                <ReactDatePicker
+                                                    customInput={
+                                                        <DateInput
+                                                            $invalid={
+                                                                !!errors
+                                                                    .startDate
+                                                                    ?.message
+                                                            }
+                                                        />
                                                     }
-                                                >
-                                                    Detail
-                                                </Button>
-                                            </STD>
-                                        </STBodyTR>
-                                    ))}
-                                </STBody>
-                            </STable>
-                        </Card>
-                    </Col>
-                </Row>
-                <Row>
-                    <Pagination
-                        onPageChange={pageChangeHandler}
-                        totalCount={orderCount}
-                        currentPage={currentPage}
-                        pageSize={10}
-                    />
-                </Row>
-            </Container>
-            {/* </HistorySection> */}
-        </>
+                                                    onChange={onChange}
+                                                    selected={value}
+                                                    placeholderText="select date"
+                                                />
+                                            );
+                                        }}
+                                    />
+                                </FormGroup>
+                            </Col>
+                            <Col $md={3}>
+                                <FormGroup>
+                                    <label htmlFor="endDate">End Date</label>
+                                    <Controller
+                                        name="endDate"
+                                        control={control}
+                                        render={({
+                                            field: { onChange, value },
+                                        }) => {
+                                            return (
+                                                <ReactDatePicker
+                                                    customInput={
+                                                        <DateInput
+                                                            $invalid={
+                                                                !!errors.endDate
+                                                                    ?.message
+                                                            }
+                                                        />
+                                                    }
+                                                    onChange={onChange}
+                                                    selected={value}
+                                                    placeholderText="select date"
+                                                />
+                                            );
+                                        }}
+                                    />
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col $md={6}>
+                                <ButtonGroup>
+                                    <Button type="submit" $block>
+                                        Search
+                                    </Button>
+                                </ButtonGroup>
+                            </Col>
+                        </Row>
+                    </form>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <Card>
+                        <STable>
+                            <STHead>
+                                <tr>
+                                    <STH>Date</STH>
+                                    <STH>Price</STH>
+                                    {/* <STH>Status</STH> */}
+                                    <STH>Action</STH>
+                                </tr>
+                            </STHead>
+                            <STBody>
+                                {pageOrders.map((item, index) => (
+                                    <STBodyTR key={item._id}>
+                                        <STD>{item.createdAt}</STD>
+                                        <STD>${item.totalPrice}</STD>
+                                        {/* <STD>{item.isDelivered}</STD> */}
+                                        <STD>
+                                            <Button
+                                                onClick={() =>
+                                                    detaliHandler(item._id)
+                                                }
+                                            >
+                                                Detail
+                                            </Button>
+                                        </STD>
+                                    </STBodyTR>
+                                ))}
+                            </STBody>
+                        </STable>
+                    </Card>
+                </Col>
+            </Row>
+            <Row>
+                <Pagination
+                    onPageChange={pageChangeHandler}
+                    totalCount={orderCount}
+                    currentPage={currentPage}
+                    pageSize={10}
+                />
+            </Row>
+        </Container>
     );
 };
 

@@ -120,6 +120,7 @@ export const Card = styled.div`
     background-color: #fff;
     border-radius: 5px;
     border: 1px solid #edebeb;
+    overflow: auto;
 `;
 
 export const Input = styled.input<{ $invalid?: boolean }>`
