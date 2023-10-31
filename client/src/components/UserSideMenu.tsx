@@ -22,9 +22,6 @@ const appearFromRight = keyframes`
 export const SideMenu = styled.header`
     margin-top: 7rem;
     float: left;
-    /* position: fixed;
-    top: 30%;
-    left: 0; */
     border-radius: 0 12px 12px 0;
     border-width: 2px;
     border-style: solid;
@@ -50,28 +47,13 @@ export const ClosedSideBar = styled(SideMenu)`
         > button {
             width: 100%;
             padding: 18px;
-
-            &:hover {
-                svg {
-                    path {
-                        color: var(--third-color);
-                    }
-                }
-            }
         }
 
         > button svg {
             width: 24px;
             height: 24px;
 
-            color: #c4c4c4;
-        }
-
-        > img {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            margin-top: 16px;
+            color: ${({ theme }) => theme.colors.primary};
         }
 
         ul {
@@ -91,17 +73,6 @@ export const ClosedSideBar = styled(SideMenu)`
                 align-items: center;
                 justify-content: center;
 
-                transition: background 0.3s;
-
-                &:hover {
-                    background: var(--primary-background);
-
-                    svg {
-                        path {
-                            color: var(--third-color);
-                        }
-                    }
-                }
                 svg {
                     width: 20px;
                     height: 20px;
@@ -132,11 +103,6 @@ export const ClosedSideBar = styled(SideMenu)`
                 justify-content: center;
 
                 transition: color 0.3s;
-                &:hover {
-                    svg path {
-                        color: var(--third-color);
-                    }
-                }
                 svg {
                     width: 20px;
                     height: 20px;
@@ -152,8 +118,6 @@ export const ClosedSideBar = styled(SideMenu)`
             display: flex;
             align-items: center;
             justify-content: center;
-
-            background: var(--third-color);
             width: 100%;
             img {
                 width: 32px;
@@ -183,17 +147,11 @@ export const OpenSideBar = styled(SideMenu)`
                 cursor: pointer;
                 padding: 18px;
 
-                &:hover {
-                    svg path {
-                        color: var(--third-color);
-                    }
-                }
-
                 svg {
                     width: 24px;
                     height: 24px;
 
-                    color: #c4c4c4;
+                    color: ${({ theme }) => theme.colors.primary};
                 }
             }
         }
@@ -230,7 +188,7 @@ export const OpenSideBar = styled(SideMenu)`
             flex-direction: column;
 
             a {
-                color: #c4c4c4;
+                color: ${({ theme }) => theme.colors.primary};
                 padding: 16px 20px;
                 border-radius: 8px 0 0 8px;
 
@@ -239,13 +197,6 @@ export const OpenSideBar = styled(SideMenu)`
                 gap: 16px;
 
                 transition: background 0.3s;
-                &:hover {
-                    background: var(--shadow-black-color);
-
-                    svg path {
-                        color: var(--third-color);
-                    }
-                }
 
                 p {
                     animation: ${appearFromRight} 0.4s;
@@ -276,18 +227,11 @@ export const OpenSideBar = styled(SideMenu)`
                 padding: 16px 20px;
                 display: flex;
                 align-items: center;
-                color: #c4c4c4;
+                color: ${({ theme }) => theme.colors.primary};
                 gap: 16px;
 
                 transition: color 0.3s;
                 &:hover {
-                    svg path {
-                        color: var(--third-color);
-                    }
-                }
-                svg {
-                    width: 20px;
-                    height: 20px;
                 }
 
                 p {
@@ -300,7 +244,6 @@ export const OpenSideBar = styled(SideMenu)`
             padding: 16px 0;
             border-radius: 8px 8px 0 0;
 
-            background: var(--third-color);
             width: 100%;
 
             display: flex;
@@ -309,7 +252,7 @@ export const OpenSideBar = styled(SideMenu)`
 
             p {
                 text-overflow: ellipsis;
-                color: #c4c4c4;
+                color: ${({ theme }) => theme.colors.primary};
                 width: 70%;
                 padding-right: 12px;
                 white-space: nowrap;
@@ -333,55 +276,47 @@ const UserSideMenu = () => {
     function handleChangeSideBar() {
         setSideBar((prevState) => !prevState);
     }
-    return (
-        // <Content>
-        !sideBar ? (
-            <ClosedSideBar>
-                <nav>
+    return !sideBar ? (
+        <ClosedSideBar>
+            <nav>
+                <button type="button" onClick={handleChangeSideBar}>
+                    <TbArrowBigRightLines />
+                </button>
+
+                {/* <img src={logoImg} alt="Eu" /> */}
+
+                {/* Links principais do app */}
+                <ul>
+                    <Link to="/user">
+                        <TbUser />
+                    </Link>
+                    <Link to="/user/orders">
+                        <TbShoppingCart />
+                    </Link>
+                </ul>
+            </nav>
+        </ClosedSideBar>
+    ) : (
+        <OpenSideBar>
+            <nav>
+                <span>
                     <button type="button" onClick={handleChangeSideBar}>
-                        <TbArrowBigRightLines />
+                        <TbArrowBigLeftLines />
                     </button>
+                </span>
 
-                    {/* <img src={logoImg} alt="Eu" /> */}
-
-                    {/* Links principais do app */}
-                    <ul>
-                        <a href="/user">
-                            <TbUser />
-                        </a>
-                        <a href="/user/orders">
-                            <TbShoppingCart />
-                        </a>
-                    </ul>
-                </nav>
-            </ClosedSideBar>
-        ) : (
-            <OpenSideBar>
-                <nav>
-                    <span>
-                        <button type="button" onClick={handleChangeSideBar}>
-                            <TbArrowBigLeftLines />
-                        </button>
-                    </span>
-                    <div>
-                        {/* <img src={logoImg} alt="Eu" /> */}
-                        <h1>Minha logo </h1>
-                    </div>
-
-                    <ul>
-                        <Link to="/user">
-                            <TbUser />
-                            <p>Profile</p>
-                        </Link>
-                        <Link to="/user/orders">
-                            <TbShoppingCart />
-                            <p>Order History</p>
-                        </Link>
-                    </ul>
-                </nav>
-            </OpenSideBar>
-        )
-        // </Content>
+                <ul>
+                    <Link to="/user">
+                        <TbUser />
+                        <p>Profile</p>
+                    </Link>
+                    <Link to="/user/orders">
+                        <TbShoppingCart />
+                        <p>Order History</p>
+                    </Link>
+                </ul>
+            </nav>
+        </OpenSideBar>
     );
 };
 
