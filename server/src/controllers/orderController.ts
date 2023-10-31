@@ -119,6 +119,7 @@ export const getUserOrderHistory: RequestHandler = async (
                     },
                 },
             },
+            { $sort: { createdAt: 1 } },
             { $skip: startIndex },
             { $limit: PAGE_SIZE },
         ]);
