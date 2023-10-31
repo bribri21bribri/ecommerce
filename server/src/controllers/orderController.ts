@@ -55,8 +55,14 @@ export const getUserOrderHistory: RequestHandler = async (
         const startIndex = (Number(page) - 1) * PAGE_SIZE;
 
         const searchQuery = query.search || '';
-        const startDate = (query.startDate as string) || '';
-        const endDate = (query.endDate as string) || '';
+        // const startDate = (query.startDate as string) || '';
+        // const endDate = (query.endDate as string) || '';
+        const startDate = query.startDate
+            ? new Date(query.startDate as string)
+            : null;
+        const endDate = query.endDate
+            ? new Date(query.endDate as string)
+            : null;
 
         const queryFilter = searchQuery
             ? {
@@ -68,19 +74,54 @@ export const getUserOrderHistory: RequestHandler = async (
             : {};
 
         const dateFilterArr = [];
-        if (!!startDate) {
-            dateFilterArr.push({ createdAt: { $gte: startDate } });
+        if (!!startDate || !!endDate) {
+            dateFilterArr.push({
+                $and: [
+                    startDate ? { createdAt: { $gte: startDate } } : {},
+                    endDate ? { createdAt: { $lte: endDate } } : {},
+                ],
+            });
         }
-        if (!!endDate) {
-            dateFilterArr.push({ createdAt: { $lte: endDate } });
-        }
+        // if (!!startDate) {
+        //     dateFilterArr.push({ createdAt: { $gte: startDate } });
+        // }
+        // if (!!endDate) {
+        //     dateFilterArr.push({ createdAt: { $lte: endDate } });
+        // }
 
         const userFilter = { user: req.user!._id };
-        const ordersHistory = await Order.find({
-            $and: [userFilter, queryFilter, ...dateFilterArr],
-        })
-            .skip(startIndex)
-            .limit(PAGE_SIZE);
+        // const ordersHistory = await Order.find({
+        //     $and: [userFilter, queryFilter, ...dateFilterArr],
+        // })
+        //     .skip(startIndex)
+        //     .limit(PAGE_SIZE);
+        const ordersHistory = await Order.aggregate([
+            {
+                $match: { $and: [userFilter, queryFilter, ...dateFilterArr] },
+            },
+            {
+                $project: {
+                    _id: 1, // Include the existing fields you want to keep
+                    orderItems: 1,
+                    shippingAddress: 1,
+                    totalPrice: 1,
+                    totalQuantity: 1,
+                    user: 1,
+                    isPaid: 1,
+                    paidAt: 1,
+                    paymentResult: 1,
+                    createdAt: {
+                        $dateToString: {
+                            format: '%Y/%m/%d', // date format
+                            date: '$createdAt',
+                            timezone: 'Asia/Taipei', // timezone
+                        },
+                    },
+                },
+            },
+            { $skip: startIndex },
+            { $limit: PAGE_SIZE },
+        ]);
         const countHistory = await Order.countDocuments({
             $and: [userFilter, queryFilter, ...dateFilterArr],
         });
