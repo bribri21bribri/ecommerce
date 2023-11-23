@@ -11,4 +11,4 @@ a fullstack web project using mern stack.
 - authentication: jsonwebtoken
 - database: MongoDB
 
-[Demo]([http://cc.ee.ntu.edu.tw/~rbwu/rapid_content/course/highspeed/3D_PEEC.pdf](https://natori-furniture-fake.onrender.com/)https://natori-furniture-fake.onrender.com/)
+[Demo: https://natori-furniture-fake.onrender.com](https://natori-furniture-fake.onrender.com/)
